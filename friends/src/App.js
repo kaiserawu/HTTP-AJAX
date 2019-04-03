@@ -28,7 +28,7 @@ class App extends Component {
     event.preventDefault();
     axios.post('http://localhost:5000/friends', {
         name: this.state.newName,
-        age: this.state.newAge,
+        age: Number(this.state.newAge),
         email: this.state.newEmail
       })
       .then(res => console.log(res))
