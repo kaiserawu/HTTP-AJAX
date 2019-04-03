@@ -7,7 +7,10 @@ class App extends Component {
     super(props)
 
     this.state = {
-      friends: []
+      friends: [],
+      newName: '',
+      newAge: '',
+      newEmail: '',
     }
   }
 
@@ -15,6 +18,21 @@ class App extends Component {
     axios.get('http://localhost:5000/friends')
       .then(res => this.setState({friends: res.data}))
       .catch(err => console.warn(err));
+  }
+
+  handleText = event => {
+    this.setState({[event.target.name]: event.target.value})
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    axios.post('http://localhost:5000/friends', {
+        name: this.state.newName,
+        age: this.state.newAge,
+        email: this.state.newEmail
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   }
 
   render() {
@@ -31,6 +49,12 @@ class App extends Component {
             )
           })}
         </ul>
+        <form onSubmit={this.handleSubmit} >
+          <input type="text" name="newName" placeholder="Friend's Name" value={this.state.newName} onChange={this.handleText} />
+          <input type="number" name="newAge" placeholder="Friend's Age" value={this.state.newAge} onChange={this.handleText} />
+          <input type="text" name="newEmail" placeholder="Friend's Email" value={this.state.newEmail} onChange={this.handleText} />
+          <input type="submit" />
+        </form>
       </div>
     );
   }
