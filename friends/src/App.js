@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      friends: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:5000/friends')
+      .then(res => this.setState({friends: res.data}))
+      .catch(err => console.warn(err));
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <ul>
+          {this.state.friends.map(friend => {
+            return (
+              <li key={friend.id}>
+                <h2>{friend.name}</h2>
+                <h4>{friend.age}</h4>
+                <h3>{friend.email}</h3>
+              </li>
+            )
+          })}
+        </ul>
       </div>
     );
   }
