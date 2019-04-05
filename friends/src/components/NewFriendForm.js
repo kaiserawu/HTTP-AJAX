@@ -17,7 +17,6 @@ class NewFriendForm extends React.Component {
   }
 
   handleSubmit = e => {
-    e.preventDefault();
     axios.post('http://localhost:5000/friends', {
         id: this.props.newId,
         name: this.state.name,

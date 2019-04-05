@@ -18,7 +18,6 @@ class UpdateFriendForm extends React.Component {
   }
 
   handleSubmit = e => {
-    e.preventDefault();
     axios.put(`http://localhost:5000/friends/${this.state.id}`, {
       id: this.state.id,
       name: this.state.name,

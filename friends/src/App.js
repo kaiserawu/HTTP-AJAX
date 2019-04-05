@@ -26,34 +26,6 @@ class App extends Component {
       .catch(err => console.error(err));
   }
 
-  handleText = event => {
-    this.setState({[event.target.name]: event.target.value})
-  }
-
-  handleSubmit = e => {
-    e.preventDefault();
-    axios.post('http://localhost:5000/friends', {
-        id: this.state.friends.length + 1,
-        name: this.state.newFriend.name,
-        age: Number(this.state.newFriend.age),
-        email: this.state.newFriend.email
-      })
-      .then(res => console.log(res))
-      .catch(err => console.error(err));
-  }
-
-  handleSubmitPut = e => {
-    e.preventDefault();
-    axios.put(`http://localhost:5000/friends/${this.state.selectedId}`, {
-      id: this.state.selectedId,
-      name: this.state.newName,
-      age: Number(this.state.newAge),
-      email: this.state.newEmail
-    })
-    .then(res => console.log(res))
-    .catch(err => console.error(err));
-  }
-
   render() {
     return (
       <div className="App">
