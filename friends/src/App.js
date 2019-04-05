@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 
+import Friend from './components/Friend';
 import NewFriendForm from './components/NewFriendForm';
 import UpdateFriendForm from './components/UpdateFriendForm';
 
@@ -32,11 +33,7 @@ class App extends Component {
         <ul>
           {this.state.friends.map(friend => {
             return (
-              <li key={friend.id}>
-                <h2>{friend.name}</h2>
-                <h4>{friend.age}</h4>
-                <h3>{friend.email}</h3>
-              </li>
+              <Friend key={friend.id} id={friend.id} name={friend.name} age={friend.age} email={friend.email} />
             )
           })}
         </ul>
