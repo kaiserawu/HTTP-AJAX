@@ -25,7 +25,6 @@ class App extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
     axios.post('http://localhost:5000/friends', {
         name: this.state.newName,
         age: Number(this.state.newAge),
