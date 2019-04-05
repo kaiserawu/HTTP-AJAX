@@ -2,36 +2,56 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 
+import NewFriendForm from './components/NewFriendForm';
+import UpdateFriendForm from './components/UpdateFriendForm';
+
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       friends: [],
-      newName: '',
-      newAge: '',
-      newEmail: '',
+      updatedFriend: {
+        id: '',
+        name: '',
+        age: '',
+        email: ''
+      }
     }
   }
 
   componentDidMount() {
     axios.get('http://localhost:5000/friends')
       .then(res => this.setState({friends: res.data}))
-      .catch(err => console.warn(err));
+      .catch(err => console.error(err));
   }
 
   handleText = event => {
     this.setState({[event.target.name]: event.target.value})
   }
 
-  handleSubmit = event => {
+  handleSubmit = e => {
+    e.preventDefault();
     axios.post('http://localhost:5000/friends', {
-        name: this.state.newName,
-        age: Number(this.state.newAge),
-        email: this.state.newEmail
+        id: this.state.friends.length + 1,
+        name: this.state.newFriend.name,
+        age: Number(this.state.newFriend.age),
+        email: this.state.newFriend.email
       })
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
+  }
+
+  handleSubmitPut = e => {
+    e.preventDefault();
+    axios.put(`http://localhost:5000/friends/${this.state.selectedId}`, {
+      id: this.state.selectedId,
+      name: this.state.newName,
+      age: Number(this.state.newAge),
+      email: this.state.newEmail
+    })
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
   }
 
   render() {
@@ -48,12 +68,8 @@ class App extends Component {
             )
           })}
         </ul>
-        <form onSubmit={this.handleSubmit} >
-          <input type="text" name="newName" placeholder="Friend's Name" value={this.state.newName} onChange={this.handleText} />
-          <input type="number" name="newAge" placeholder="Friend's Age" value={this.state.newAge} onChange={this.handleText} />
-          <input type="text" name="newEmail" placeholder="Friend's Email" value={this.state.newEmail} onChange={this.handleText} />
-          <input type="submit" />
-        </form>
+        <NewFriendForm newId={this.state.friends.length + 1} />
+        <UpdateFriendForm />
       </div>
     );
   }
