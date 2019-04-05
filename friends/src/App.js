@@ -12,19 +12,23 @@ class App extends Component {
 
     this.state = {
       friends: [],
-      updatedFriend: {
-        id: '',
-        name: '',
-        age: '',
-        email: ''
-      }
+      newId: ''
     }
   }
 
-  componentDidMount() {
+  getDataFromServer = () => {
     axios.get('http://localhost:5000/friends')
-      .then(res => this.setState({friends: res.data}))
+      .then(res => this.setState(prevState => {
+        return ({
+          friends: res.data,
+          newId: prevState.newId === '' ? res.data.length + 1 : prevState.newId + 1
+        })
+      }))
       .catch(err => console.error(err));
+  }
+
+  componentDidMount() {
+    this.getDataFromServer();
   }
 
   render() {
@@ -33,12 +37,12 @@ class App extends Component {
         <ul>
           {this.state.friends.map(friend => {
             return (
-              <Friend key={friend.id} id={friend.id} name={friend.name} age={friend.age} email={friend.email} />
+              <Friend key={friend.id} id={friend.id} name={friend.name} age={friend.age} email={friend.email} refresh={this.getDataFromServer}/>
             )
           })}
         </ul>
-        <NewFriendForm newId={this.state.friends.length + 1} />
-        <UpdateFriendForm />
+        <NewFriendForm newId={this.state.newId} refresh={this.getDataFromServer}/>
+        <UpdateFriendForm refresh={this.getDataFromServer}/>
       </div>
     );
   }

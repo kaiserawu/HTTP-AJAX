@@ -17,13 +17,22 @@ class NewFriendForm extends React.Component {
   }
 
   handleSubmit = e => {
+    e.preventDefault();
     axios.post('http://localhost:5000/friends', {
         id: this.props.newId,
         name: this.state.name,
         age: Number(this.state.age),
         email: this.state.email
       })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        this.props.refresh();
+        this.setState({
+          name: '',
+          age: '',
+          email: ''
+        })
+      })
       .catch(err => console.error(err));
   }
 

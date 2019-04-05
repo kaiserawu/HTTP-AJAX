@@ -24,7 +24,16 @@ class UpdateFriendForm extends React.Component {
       age: Number(this.state.age),
       email: this.state.email
     })
-    .then(res => console.log(res))
+    .then(res => {
+      console.log(res);
+      this.props.refresh();
+      this.setState({
+        id: '',
+        name: '',
+        age: '',
+        email: ''
+      })
+    })
     .catch(err => console.error(err));
   }
 

@@ -5,11 +5,11 @@ import './Friend.css';
 
 const Friend = props => {
 
-  const handleDelete = e => {
+  const handleDelete = () => {
     axios.delete(`http://localhost:5000/friends/${props.id}`)
       .then(res => {
         console.log(res);
-        window.location.reload();
+        props.refresh();
       })
       .catch(err => console.error(err));
   }
